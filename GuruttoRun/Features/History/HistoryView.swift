@@ -10,9 +10,9 @@ struct HistoryView: View {
                 if store.isLoading {
                     ProgressView()
                 } else if store.records.isEmpty {
-                    VStack(spacing: 16) {
+                    VStack(spacing: Spacing.md) {
                         Image(systemName: "figure.run")
-                            .font(.system(size: 64))
+                            .font(.system(size: FontSize.display))
                             .foregroundStyle(.secondary)
 
                         Text("記録がありません")
@@ -52,14 +52,14 @@ struct RecordRow: View {
     let record: RunRecord
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: Spacing.xs) {
             // 日付
             Text(formatDate(record.date))
                 .font(.caption)
                 .foregroundStyle(.secondary)
 
             // 距離
-            HStack(alignment: .firstTextBaseline, spacing: 4) {
+            HStack(alignment: .firstTextBaseline, spacing: Spacing.xxs) {
                 Text(String(format: "%.2f", record.distanceMeters / 1000.0))
                     .font(.title.bold())
 
@@ -69,7 +69,7 @@ struct RecordRow: View {
             }
 
             // 詳細
-            HStack(spacing: 16) {
+            HStack(spacing: Spacing.md) {
                 Label(formatDuration(record.elapsed), systemImage: "clock")
                     .font(.caption)
 
@@ -88,7 +88,7 @@ struct RecordRow: View {
                     .foregroundStyle(.tertiary)
             }
         }
-        .padding(.vertical, 8)
+        .padding(.vertical, Spacing.xs)
     }
 
     private func formatDate(_ date: Date) -> String {

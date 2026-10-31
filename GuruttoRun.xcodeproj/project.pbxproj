@@ -14,6 +14,7 @@
 		32725A831D13EA4A92AF78F5 /* ShareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7C353B2A515E4AE961C65D /* ShareView.swift */; };
 		3D971D45DDE175659209BA7D /* LocalProjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65857A3F67AD132EEF381465 /* LocalProjection.swift */; };
 		59CF98D49AD6E601C71622C9 /* GuruttoRunApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109AD302A10C1FCBE4343E5F /* GuruttoRunApp.swift */; };
+		66B96E78AC6F0C359DF3D550 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB5D7CEC0FF773740964C3 /* Colors.swift */; };
 		731D96AF74F25DFCE4EACD25 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27940C1F2CB979E2F70BF285 /* Assets.xcassets */; };
 		7387AC97812BB15BB69F197F /* RunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A431AF53E53A7E12D20AA0C4 /* RunView.swift */; };
 		7537009DE0523D63E91BC0A7 /* RunFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F474FE639CC5ADB66819DEE /* RunFeatureTests.swift */; };
@@ -23,7 +24,9 @@
 		9336661E8A9756CB9CD54D7A /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 3FB2E45BEC4AF7793F89F112 /* ComposableArchitecture */; };
 		B54F6F7AE6219E66A5BFB6C9 /* RunRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1687E5DDBE8DCBD586DD32 /* RunRecord.swift */; };
 		CFF225ED15400782866573ED /* RunFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320225CFEF8D015DCEE7216E /* RunFeature.swift */; };
+		D4DD80563EC12358E0E52BD3 /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000551C9931500216C9C7E1 /* Typography.swift */; };
 		DDB6B6855EF9159C727E983B /* LapCounterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AD6C05F3D71D9908E24644 /* LapCounterTests.swift */; };
+		DE8DB06BB80E164E1F4A59E0 /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B40EB861A74B208E0D59B79 /* Spacing.swift */; };
 		E25735077ADA23659D1D1040 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF48CCFD2A22361053EB5239 /* HistoryView.swift */; };
 		E28C1FEAE4CB540388B40757 /* HistoryFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADF1169F2172303ED310D07 /* HistoryFeature.swift */; };
 		E2DADD7294EEF314B9BCF515 /* RouteShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = C989E62CD36491F51F08CEA5 /* RouteShape.swift */; };
@@ -45,18 +48,21 @@
 
 /* Begin PBXFileReference section */
 		0611AFBE3C3708D9073707D1 /* ReferenceRoute.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ReferenceRoute.json; sourceTree = "<group>"; };
+		1000551C9931500216C9C7E1 /* Typography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typography.swift; sourceTree = "<group>"; };
 		109AD302A10C1FCBE4343E5F /* GuruttoRunApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuruttoRunApp.swift; sourceTree = "<group>"; };
 		18CDE274487139AA2B1BE03E /* GuruttoRun.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GuruttoRun.entitlements; sourceTree = "<group>"; };
 		1C1687E5DDBE8DCBD586DD32 /* RunRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunRecord.swift; sourceTree = "<group>"; };
+		1FCB5D7CEC0FF773740964C3 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		27940C1F2CB979E2F70BF285 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		320225CFEF8D015DCEE7216E /* RunFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunFeature.swift; sourceTree = "<group>"; };
+		3B40EB861A74B208E0D59B79 /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
 		4B05CA4EE160B678CC2EEFA5 /* ShareClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareClient.swift; sourceTree = "<group>"; };
-		555950703216C36C14058BBF /* ぐるっとらん.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ぐるっとらん.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		555950703216C36C14058BBF /* GuruttoRun.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = GuruttoRun.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5ADF1169F2172303ED310D07 /* HistoryFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryFeature.swift; sourceTree = "<group>"; };
 		5F474FE639CC5ADB66819DEE /* RunFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunFeatureTests.swift; sourceTree = "<group>"; };
 		647D6C8292A911E670F334AD /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		65857A3F67AD132EEF381465 /* LocalProjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalProjection.swift; sourceTree = "<group>"; };
-		6B58CCE68E3A3EAF50C0FD9F /* GuruttoRunTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GuruttoRunTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B58CCE68E3A3EAF50C0FD9F /* GuruttoRunTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = GuruttoRunTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7112E9929300687E5A2E18AF /* project.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = project.yml; sourceTree = "<group>"; };
 		73703B591DA95BA43D48A4FE /* Coordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
 		7CCD58B8D3D0634ADDBACDBD /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
@@ -182,6 +188,7 @@
 				FA9B57E00FEE7414F955D354 /* Info.plist */,
 				90F121590D3C2C520D64F098 /* App */,
 				EB11F9F86602732EC692067E /* Dependencies */,
+				E70DBABA486A9F10F6650952 /* DesignSystem */,
 				51255B42FFEB5E28662CE223 /* Domain */,
 				81F36C66E721653816AE8227 /* Features */,
 				3629F954F76B6276CAFD46FE /* Resources */,
@@ -210,10 +217,20 @@
 		D6CBC7CE45CFFB25E5DF30DA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				555950703216C36C14058BBF /* ぐるっとらん.app */,
+				555950703216C36C14058BBF /* GuruttoRun.app */,
 				6B58CCE68E3A3EAF50C0FD9F /* GuruttoRunTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		E70DBABA486A9F10F6650952 /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				1FCB5D7CEC0FF773740964C3 /* Colors.swift */,
+				3B40EB861A74B208E0D59B79 /* Spacing.swift */,
+				1000551C9931500216C9C7E1 /* Typography.swift */,
+			);
+			path = DesignSystem;
 			sourceTree = "<group>";
 		};
 		EB11F9F86602732EC692067E /* Dependencies */ = {
@@ -266,7 +283,7 @@
 				3FB2E45BEC4AF7793F89F112 /* ComposableArchitecture */,
 			);
 			productName = GuruttoRun;
-			productReference = 555950703216C36C14058BBF /* ぐるっとらん.app */;
+			productReference = 555950703216C36C14058BBF /* GuruttoRun.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -277,6 +294,12 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					D24548F81FA414880BC55407 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = A2DE29B0933B9825C40A79C5 /* Build configuration list for PBXProject "GuruttoRun" */;
 			developmentRegion = ja;
@@ -328,6 +351,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7D4C3F2A88A7D3FB1934007D /* AppFeature.swift in Sources */,
+				66B96E78AC6F0C359DF3D550 /* Colors.swift in Sources */,
 				E781B51F6C13A6D4E8095B87 /* Coordinate.swift in Sources */,
 				59CF98D49AD6E601C71622C9 /* GuruttoRunApp.swift in Sources */,
 				E81E5A956529C117B1D83816 /* HealthKitClient.swift in Sources */,
@@ -345,6 +369,8 @@
 				FAA77C76733F5D09C4466A2B /* ShareClient.swift in Sources */,
 				8B58E275FB14944229AC1711 /* ShareFeature.swift in Sources */,
 				32725A831D13EA4A92AF78F5 /* ShareView.swift in Sources */,
+				DE8DB06BB80E164E1F4A59E0 /* Spacing.swift in Sources */,
+				D4DD80563EC12358E0E52BD3 /* Typography.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -365,9 +391,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = GuruttoRun/GuruttoRun.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = B2P9RSKK26;
 				INFOPLIST_FILE = GuruttoRun/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -376,8 +401,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.marotech.GuruttoRun;
 				PRODUCT_NAME = "ぐるっとらん";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "GuruttoRun Development";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -466,9 +489,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = GuruttoRun/GuruttoRun.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = B2P9RSKK26;
 				INFOPLIST_FILE = GuruttoRun/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -477,8 +499,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.marotech.GuruttoRun;
 				PRODUCT_NAME = "ぐるっとらん";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "GuruttoRun Development";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

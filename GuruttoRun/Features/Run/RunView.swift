@@ -8,7 +8,7 @@ struct RunView: View {
         WithPerceptionTracking {
             ZStack {
                 // 背景
-                Color(hex: "F5F5F5").ignoresSafeArea()
+                AppColors.background.ignoresSafeArea()
 
                 VStack(spacing: 0) {
                     // モード切替
@@ -24,14 +24,14 @@ struct RunView: View {
 
                     // 計測中は切替不可メッセージ
                     if store.status != .idle {
-                        HStack(spacing: 4) {
+                        HStack(spacing: Spacing.xxs) {
                             Image(systemName: "lock.fill")
                                 .font(.caption2)
                             Text("計測中はモードを切り替えできません")
                                 .font(.caption)
                         }
-                        .foregroundStyle(.gray)
-                        .padding(.top, 8)
+                        .foregroundStyle(AppColors.textSecondary)
+                        .padding(.top, Spacing.xs)
                     }
 
                     Spacer()
@@ -62,8 +62,8 @@ struct RunView: View {
                             elapsed: store.elapsed,
                             pace: calculatePace(distance: store.distanceMeters, elapsed: store.elapsed)
                         )
-                        .padding(.horizontal, 32)
-                        .padding(.bottom, 24)
+                        .padding(.horizontal, Spacing.xxl)
+                        .padding(.bottom, Spacing.xl)
                     }
 
                     // ボタン
@@ -75,8 +75,8 @@ struct RunView: View {
                         onResumeTapped: { store.send(.resumeTapped) },
                         onFinishTapped: { store.send(.finishTapped) }
                     )
-                    .padding(.horizontal, 32)
-                    .padding(.bottom, 40)
+                    .padding(.horizontal, Spacing.xxl)
+                    .padding(.bottom, Spacing.xxxl)
                 }
             }
             .onAppear {
@@ -129,7 +129,7 @@ struct ModeSwitcher: View {
     let onModeChanged: (RunFeature.State.Mode) -> Void
 
     var body: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: Spacing.xs) {
             // 皇居モード
             Button {
                 guard !isRunning else { return }
@@ -141,12 +141,12 @@ struct ModeSwitcher: View {
                     Text("皇居")
                         .font(.subheadline.weight(.semibold))
                 }
-                .foregroundStyle(selectedMode == .imperialPalace ? .white : Color(hex: "3D9B7E"))
+                .foregroundStyle(selectedMode == .imperialPalace ? AppColors.cardBackground : AppColors.imperialPalace)
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 12)
-                .background(selectedMode == .imperialPalace ? Color(hex: "3D9B7E") : Color.white)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-                .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 1)
+                .padding(.vertical, Spacing.sm)
+                .background(selectedMode == .imperialPalace ? AppColors.imperialPalace : AppColors.cardBackground)
+                .clipShape(RoundedRectangle(cornerRadius: Radius.xl))
+                .shadow(color: Shadow.light.color, radius: Shadow.light.radius, x: Shadow.light.x, y: Shadow.light.y)
             }
             .disabled(isRunning)
 
@@ -161,16 +161,16 @@ struct ModeSwitcher: View {
                     Text("通常")
                         .font(.subheadline.weight(.semibold))
                 }
-                .foregroundStyle(selectedMode == .normal ? .white : Color(hex: "FF9F5A"))
+                .foregroundStyle(selectedMode == .normal ? AppColors.cardBackground : AppColors.normal)
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 12)
-                .background(selectedMode == .normal ? Color(hex: "FF9F5A") : Color.white)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-                .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 1)
+                .padding(.vertical, Spacing.sm)
+                .background(selectedMode == .normal ? AppColors.normal : AppColors.cardBackground)
+                .clipShape(RoundedRectangle(cornerRadius: Radius.xl))
+                .shadow(color: Shadow.light.color, radius: Shadow.light.radius, x: Shadow.light.x, y: Shadow.light.y)
             }
             .disabled(isRunning)
         }
-        .frame(height: 48)
+        .frame(height: ButtonSize.md)
     }
 }
 
@@ -180,58 +180,58 @@ struct IdleView: View {
     let mode: RunFeature.State.Mode
 
     var body: some View {
-        VStack(spacing: 32) {
+        VStack(spacing: Spacing.xxl) {
             // アイコン
             ZStack {
                 Circle()
-                    .fill(Color.white)
-                    .frame(width: 200, height: 200)
-                    .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 2)
+                    .fill(AppColors.cardBackground)
+                    .frame(width: ButtonSize.iconCircle, height: ButtonSize.iconCircle)
+                    .shadow(color: Shadow.medium.color, radius: Shadow.medium.radius, x: Shadow.medium.x, y: Shadow.medium.y)
 
                 Image(systemName: mode == .imperialPalace ? "arrow.triangle.2.circlepath" : "figure.run")
-                    .font(.system(size: 72))
-                    .foregroundStyle(mode == .imperialPalace ? Color(hex: "3D9B7E") : Color(hex: "FF9F5A"))
+                    .font(.system(size: IconSize.xxl))
+                    .foregroundStyle(mode == .imperialPalace ? AppColors.imperialPalace : AppColors.normal)
             }
 
             // モード名と説明
-            VStack(spacing: 8) {
+            VStack(spacing: Spacing.xs) {
                 Text(mode == .imperialPalace ? "皇居モード" : "通常モード")
                     .font(.title.weight(.bold))
-                    .foregroundStyle(.black)
+                    .foregroundStyle(AppColors.textPrimary)
 
                 Text(mode == .imperialPalace ? "皇居を走るとき用" : "近所のコースや旅先で")
                     .font(.subheadline)
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(AppColors.textSecondary)
             }
 
             // 特徴
-            VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: Spacing.sm) {
                 if mode == .imperialPalace {
-                    FeatureRow(text: "周回を自動でカウント", color: Color(hex: "3D9B7E"))
-                    FeatureRow(text: "どこから走り始めても1周で1カウント", color: Color(hex: "3D9B7E"))
-                    FeatureRow(text: "「2.5周」のような実測の周回数を表示", color: Color(hex: "3D9B7E"))
+                    FeatureRow(text: "周回を自動でカウント", color: AppColors.imperialPalace)
+                    FeatureRow(text: "どこから走り始めても1周で1カウント", color: AppColors.imperialPalace)
+                    FeatureRow(text: "「2.5周」のような実測の周回数を表示", color: AppColors.imperialPalace)
                 } else {
-                    FeatureRow(text: "周回カウントなし（距離のみ計測）", color: Color(hex: "FF9F5A"))
-                    FeatureRow(text: "距離を「皇居○周分」に換算して表示", color: Color(hex: "FF9F5A"))
-                    FeatureRow(text: "GPS が弱い場所でも使いやすく、電池にもやさしい", color: Color(hex: "FF9F5A"))
+                    FeatureRow(text: "周回カウントなし（距離のみ計測）", color: AppColors.normal)
+                    FeatureRow(text: "距離を「皇居○周分」に換算して表示", color: AppColors.normal)
+                    FeatureRow(text: "GPS が弱い場所でも使いやすく、電池にもやさしい", color: AppColors.normal)
                 }
             }
-            .padding(20)
+            .padding(Spacing.lg)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.white)
-            .clipShape(RoundedRectangle(cornerRadius: 16))
-            .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
-            .padding(.horizontal, 32)
+            .background(AppColors.cardBackground)
+            .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
+            .shadow(color: Shadow.medium.color, radius: Shadow.medium.radius, x: Shadow.medium.x, y: Shadow.medium.y)
+            .padding(.horizontal, Spacing.xxl)
         }
     }
 }
 
 struct FeatureRow: View {
     let text: String
-    var color: Color = Color(hex: "3D9B7E")
+    var color: Color = AppColors.imperialPalace
 
     var body: some View {
-        HStack(alignment: .top, spacing: 8) {
+        HStack(alignment: .top, spacing: Spacing.xs) {
             Circle()
                 .fill(color)
                 .frame(width: 6, height: 6)
@@ -239,7 +239,7 @@ struct FeatureRow: View {
 
             Text(text)
                 .font(.subheadline)
-                .foregroundStyle(.black.opacity(0.8))
+                .foregroundStyle(AppColors.textPrimary.opacity(0.8))
                 .fixedSize(horizontal: false, vertical: true)
         }
     }
@@ -253,48 +253,48 @@ struct ImperialPalaceModeRunningView: View {
     let elapsed: Duration
 
     var body: some View {
-        VStack(spacing: 24) {
+        VStack(spacing: Spacing.xl) {
             // 距離
-            VStack(spacing: 4) {
+            VStack(spacing: Spacing.xxs) {
                 Text("距離")
                     .font(.caption)
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(AppColors.textSecondary)
 
-                HStack(alignment: .firstTextBaseline, spacing: 4) {
+                HStack(alignment: .firstTextBaseline, spacing: Spacing.xxs) {
                     Text(String(format: "%.1f", distanceMeters / 1000.0))
-                        .font(.system(size: 64, weight: .bold, design: .rounded))
-                        .foregroundStyle(.black)
+                        .font(.system(size: FontSize.display, weight: .bold, design: .rounded))
+                        .foregroundStyle(AppColors.textPrimary)
                     Text("km")
                         .font(.title2)
-                        .foregroundStyle(.gray)
+                        .foregroundStyle(AppColors.textSecondary)
                 }
             }
 
             // 周回（円形プログレス）
             ZStack {
                 Circle()
-                    .stroke(Color.gray.opacity(0.15), lineWidth: 12)
-                    .frame(width: 160, height: 160)
+                    .stroke(AppColors.border, lineWidth: Spacing.sm)
+                    .frame(width: ButtonSize.progress, height: ButtonSize.progress)
 
                 Circle()
                     .trim(from: 0, to: laps.truncatingRemainder(dividingBy: 1))
                     .stroke(
-                        Color(hex: "3D9B7E"),
-                        style: StrokeStyle(lineWidth: 12, lineCap: .round)
+                        AppColors.imperialPalace,
+                        style: StrokeStyle(lineWidth: Spacing.sm, lineCap: .round)
                     )
-                    .frame(width: 160, height: 160)
+                    .frame(width: ButtonSize.progress, height: ButtonSize.progress)
                     .rotationEffect(.degrees(-90))
 
-                VStack(spacing: 4) {
+                VStack(spacing: Spacing.xxs) {
                     Text(String(format: "%.1f", laps))
-                        .font(.system(size: 48, weight: .bold, design: .rounded))
-                        .foregroundStyle(.black)
+                        .font(.system(size: FontSize.xxxl, weight: .bold, design: .rounded))
+                        .foregroundStyle(AppColors.textPrimary)
                     Text("周")
                         .font(.caption)
-                        .foregroundStyle(.gray)
+                        .foregroundStyle(AppColors.textSecondary)
                     Text("実測カウント")
                         .font(.caption2)
-                        .foregroundStyle(.gray.opacity(0.7))
+                        .foregroundStyle(AppColors.textSecondary.opacity(0.7))
                 }
             }
 
@@ -302,10 +302,10 @@ struct ImperialPalaceModeRunningView: View {
             if laps >= 1 {
                 Text("\(Int(laps) + 1)周目・リングは今の周の進み具合")
                     .font(.caption)
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(AppColors.textSecondary)
             }
         }
-        .padding(.horizontal, 32)
+        .padding(.horizontal, Spacing.xxl)
     }
 }
 
@@ -316,80 +316,80 @@ struct NormalModeRunningView: View {
     let elapsed: Duration
 
     var body: some View {
-        VStack(spacing: 32) {
+        VStack(spacing: Spacing.xxl) {
             // 距離
-            VStack(spacing: 4) {
+            VStack(spacing: Spacing.xxs) {
                 Text("距離")
                     .font(.caption)
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(AppColors.textSecondary)
 
-                HStack(alignment: .firstTextBaseline, spacing: 4) {
+                HStack(alignment: .firstTextBaseline, spacing: Spacing.xxs) {
                     Text(String(format: "%.1f", distanceMeters / 1000.0))
-                        .font(.system(size: 64, weight: .bold, design: .rounded))
-                        .foregroundStyle(.black)
+                        .font(.system(size: FontSize.display, weight: .bold, design: .rounded))
+                        .foregroundStyle(AppColors.textPrimary)
                     Text("km")
                         .font(.title2)
-                        .foregroundStyle(.gray)
+                        .foregroundStyle(AppColors.textSecondary)
                 }
             }
 
             // 皇居換算カード
-            VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: Spacing.sm) {
                 HStack {
                     Text("皇居")
                         .font(.caption.weight(.semibold))
-                        .foregroundStyle(.gray)
+                        .foregroundStyle(AppColors.textSecondary)
 
                     Spacer()
 
                     Text("換算")
                         .font(.caption2)
-                        .foregroundStyle(.gray.opacity(0.6))
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(Color.gray.opacity(0.1))
+                        .foregroundStyle(AppColors.textTertiary)
+                        .padding(.horizontal, Spacing.xs)
+                        .padding(.vertical, Spacing.xxs)
+                        .background(AppColors.textSecondary.opacity(0.1))
                         .clipShape(Capsule())
                 }
 
                 HStack(alignment: .firstTextBaseline, spacing: 6) {
                     Text(String(format: "%.1f", distanceMeters / 5000.0))
-                        .font(.system(size: 40, weight: .bold, design: .rounded))
-                        .foregroundStyle(.black)
+                        .font(.system(size: FontSize.xl, weight: .bold, design: .rounded))
+                        .foregroundStyle(AppColors.textPrimary)
                     Text("周分")
                         .font(.title3)
-                        .foregroundStyle(.gray)
+                        .foregroundStyle(AppColors.textSecondary)
                 }
 
                 // プログレスバー
                 let progress = (distanceMeters / 5000.0).truncatingRemainder(dividingBy: 1)
-                HStack(spacing: 8) {
+                HStack(spacing: Spacing.xs) {
                     GeometryReader { geometry in
                         ZStack(alignment: .leading) {
-                            RoundedRectangle(cornerRadius: 4)
-                                .fill(Color.gray.opacity(0.15))
-                                .frame(height: 8)
+                            RoundedRectangle(cornerRadius: Radius.xs)
+                                .fill(AppColors.border)
+                                .frame(height: Spacing.xs)
 
-                            RoundedRectangle(cornerRadius: 4)
-                                .fill(Color(hex: "FF9F5A"))
-                                .frame(width: geometry.size.width * progress, height: 8)
+                            RoundedRectangle(cornerRadius: Radius.xs)
+                                .fill(AppColors.normal)
+                                .frame(width: geometry.size.width * progress, height: Spacing.xs)
                         }
                     }
-                    .frame(height: 8)
+                    .frame(height: Spacing.xs)
 
-                    RoundedRectangle(cornerRadius: 4)
-                        .fill(Color.gray.opacity(0.2))
-                        .frame(width: 60, height: 8)
+                    RoundedRectangle(cornerRadius: Radius.xs)
+                        .fill(AppColors.textSecondary.opacity(0.2))
+                        .frame(width: 60, height: Spacing.xs)
                 }
 
                 Text("皇居1周の実測距離で換算しています")
                     .font(.caption2)
-                    .foregroundStyle(.gray.opacity(0.6))
+                    .foregroundStyle(AppColors.textTertiary)
             }
-            .padding(20)
-            .background(Color.white)
-            .clipShape(RoundedRectangle(cornerRadius: 16))
-            .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
-            .padding(.horizontal, 32)
+            .padding(Spacing.lg)
+            .background(AppColors.cardBackground)
+            .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
+            .shadow(color: Shadow.medium.color, radius: Shadow.medium.radius, x: Shadow.medium.x, y: Shadow.medium.y)
+            .padding(.horizontal, Spacing.xxl)
         }
     }
 }
@@ -402,33 +402,33 @@ struct TimeAndPaceView: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            VStack(spacing: 4) {
+            VStack(spacing: Spacing.xxs) {
                 Text("タイム")
                     .font(.caption)
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(AppColors.textSecondary)
                 Text(formatDuration(elapsed))
-                    .font(.system(size: 28, weight: .semibold, design: .rounded))
-                    .foregroundStyle(.black)
+                    .font(.system(size: FontSize.lg + 8, weight: .semibold, design: .rounded))
+                    .foregroundStyle(AppColors.textPrimary)
             }
             .frame(maxWidth: .infinity)
 
-            VStack(spacing: 4) {
+            VStack(spacing: Spacing.xxs) {
                 Text("ペース")
                     .font(.caption)
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(AppColors.textSecondary)
                 Text(pace)
-                    .font(.system(size: 28, weight: .semibold, design: .rounded))
-                    .foregroundStyle(.black)
+                    .font(.system(size: FontSize.lg + 8, weight: .semibold, design: .rounded))
+                    .foregroundStyle(AppColors.textPrimary)
                 + Text("/km")
                     .font(.caption)
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(AppColors.textSecondary)
             }
             .frame(maxWidth: .infinity)
         }
-        .padding(.vertical, 16)
-        .background(Color.white)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-        .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+        .padding(.vertical, Spacing.md)
+        .background(AppColors.cardBackground)
+        .clipShape(RoundedRectangle(cornerRadius: Radius.md))
+        .shadow(color: Shadow.medium.color, radius: Shadow.medium.radius, x: Shadow.medium.x, y: Shadow.medium.y)
     }
 
     private func formatDuration(_ duration: Duration) -> String {
@@ -461,56 +461,56 @@ struct ActionButtons: View {
             case .idle:
                 Button(action: onStartTapped) {
                     Text("スタート")
-                        .font(.system(size: 18, weight: .bold))
-                        .foregroundStyle(.white)
-                        .frame(width: 130, height: 130)
-                        .background(mode == .imperialPalace ? Color(hex: "3D9B7E") : Color(hex: "FF9F5A"))
+                        .font(.system(size: FontSize.md + 2, weight: .bold))
+                        .foregroundStyle(AppColors.cardBackground)
+                        .frame(width: ButtonSize.xl, height: ButtonSize.xl)
+                        .background(mode == .imperialPalace ? AppColors.imperialPalace : AppColors.normal)
                         .clipShape(Circle())
-                        .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
+                        .shadow(color: Shadow.heavy.color, radius: Shadow.heavy.radius, x: Shadow.heavy.x, y: Shadow.heavy.y)
                 }
 
             case .running:
-                HStack(spacing: 32) {
+                HStack(spacing: Spacing.xxl) {
                     Button(action: onPauseTapped) {
                         Image(systemName: "pause.fill")
                             .font(.title)
-                            .foregroundStyle(.black)
-                            .frame(width: 80, height: 80)
-                            .background(Color.gray.opacity(0.15))
+                            .foregroundStyle(AppColors.textPrimary)
+                            .frame(width: ButtonSize.lg, height: ButtonSize.lg)
+                            .background(AppColors.border)
                             .clipShape(Circle())
                     }
 
                     Button(action: onFinishTapped) {
                         Image(systemName: "stop.fill")
                             .font(.title)
-                            .foregroundStyle(.white)
-                            .frame(width: 80, height: 80)
-                            .background(Color.black)
+                            .foregroundStyle(AppColors.cardBackground)
+                            .frame(width: ButtonSize.lg, height: ButtonSize.lg)
+                            .background(AppColors.textPrimary)
                             .clipShape(Circle())
-                            .shadow(color: .black.opacity(0.2), radius: 8, x: 0, y: 4)
+                            .shadow(color: AppColors.textPrimary.opacity(0.2), radius: Spacing.xs, x: 0, y: Spacing.xxs)
                     }
                 }
 
             case .paused:
-                HStack(spacing: 32) {
+                HStack(spacing: Spacing.xxl) {
                     Button(action: onResumeTapped) {
                         Image(systemName: "play.fill")
                             .font(.title)
-                            .foregroundStyle(.white)
-                            .frame(width: 80, height: 80)
-                            .background(mode == .imperialPalace ? Color(hex: "3D9B7E") : Color(hex: "FF9F5A"))
+                            .foregroundStyle(AppColors.cardBackground)
+                            .frame(width: ButtonSize.lg, height: ButtonSize.lg)
+                            .background(mode == .imperialPalace ? AppColors.imperialPalace : AppColors.normal)
                             .clipShape(Circle())
-                            .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
+                            .shadow(color: Shadow.heavy.color, radius: Shadow.heavy.radius, x: Shadow.heavy.x, y: Shadow.heavy.y)
                     }
 
                     Button(action: onFinishTapped) {
                         Image(systemName: "stop.fill")
                             .font(.title)
-                            .foregroundStyle(.white)
-                            .frame(width: 80, height: 80)
-                            .background(Color.black)
+                            .foregroundStyle(AppColors.cardBackground)
+                            .frame(width: ButtonSize.lg, height: ButtonSize.lg)
+                            .background(AppColors.textPrimary)
                             .clipShape(Circle())
-                            .shadow(color: .black.opacity(0.2), radius: 8, x: 0, y: 4)
+                            .shadow(color: AppColors.textPrimary.opacity(0.2), radius: Spacing.xs, x: 0, y: Spacing.xxs)
                     }
                 }
 
@@ -518,22 +518,6 @@ struct ActionButtons: View {
                 EmptyView()
             }
         }
-    }
-}
-
-// MARK: - Color Extension
-
-extension Color {
-    init(hex: String) {
-        let scanner = Scanner(string: hex)
-        var rgb: UInt64 = 0
-        scanner.scanHexInt64(&rgb)
-
-        let r = Double((rgb >> 16) & 0xFF) / 255.0
-        let g = Double((rgb >> 8) & 0xFF) / 255.0
-        let b = Double(rgb & 0xFF) / 255.0
-
-        self.init(red: r, green: g, blue: b)
     }
 }
 

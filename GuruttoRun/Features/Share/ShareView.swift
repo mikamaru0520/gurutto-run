@@ -23,7 +23,7 @@ struct ShareView: View {
 
     var body: some View {
         WithPerceptionTracking {
-            VStack(spacing: 24) {
+            VStack(spacing: Spacing.xl) {
                 // ヘッダー（タイトル + 閉じるボタン）
                 HStack {
                     Spacer()
@@ -75,9 +75,9 @@ struct ShareView: View {
                                 ),
                                 matching: .images
                             ) {
-                                VStack(spacing: 16) {
+                                VStack(spacing: Spacing.md) {
                                     Image(systemName: "photo.badge.plus")
-                                        .font(.system(size: 48))
+                                        .font(.system(size: FontSize.xxxl))
                                         .foregroundStyle(.secondary)
 
                                     Text("写真を選択")
@@ -85,13 +85,13 @@ struct ShareView: View {
                                 }
                                 .frame(width: 180, height: 320)
                                 .background(Color(.systemGray6))
-                                .clipShape(RoundedRectangle(cornerRadius: 16))
+                                .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
                             }
                         }
                     }
                 }
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-                .shadow(radius: 8)
+                .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
+                .shadow(radius: Spacing.xs)
                 .padding()
 
                 // 写真を選び直すボタン
@@ -112,7 +112,7 @@ struct ShareView: View {
                 Spacer()
 
                 // ボタン
-                VStack(spacing: 12) {
+                VStack(spacing: Spacing.sm) {
                     // Instagram へシェア
                     if store.canShareToInstagram {
                         Button {
@@ -130,7 +130,7 @@ struct ShareView: View {
                                     )
                                 )
                                 .foregroundStyle(.white)
-                                .clipShape(RoundedRectangle(cornerRadius: 16))
+                                .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
                         }
                     }
 
@@ -149,13 +149,13 @@ struct ShareView: View {
                                 .padding()
                                 .background(Color.blue)
                                 .foregroundStyle(.white)
-                                .clipShape(RoundedRectangle(cornerRadius: 16))
+                                .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
                         }
                     } else {
                         // 画像生成中
                         HStack {
                             ProgressView()
-                                .padding(.trailing, 8)
+                                .padding(.trailing, Spacing.xs)
                             Text("画像を準備中...")
                         }
                         .font(.title3.weight(.semibold))
@@ -163,7 +163,7 @@ struct ShareView: View {
                         .padding()
                         .background(Color.gray.opacity(0.3))
                         .foregroundStyle(.secondary)
-                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                        .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
                     }
                 }
                 .padding()

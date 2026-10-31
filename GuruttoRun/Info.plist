@@ -38,6 +38,8 @@
 		<string>location</string>
 		<string>workout-processing</string>
 	</array>
+	<key>NSSupportsLiveActivities</key>
+	<true/>
 	<key>UILaunchScreen</key>
 	<dict/>
 </dict>

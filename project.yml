@@ -44,12 +44,42 @@ targets:
         CODE_SIGN_STYLE: Automatic
         DEVELOPMENT_TEAM: ""
     dependencies:
+      - target: RunShared
       - package: ComposableArchitecture
     entitlements:
       path: GuruttoRun/GuruttoRun.entitlements
       properties:
         com.apple.developer.healthkit: true
         com.apple.developer.healthkit.background-delivery: true
+
+  RunShared:
+    type: framework
+    platform: iOS
+    deploymentTarget: "18.0"
+    sources:
+      - RunShared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.marotech.GuruttoRun.RunShared
+        PRODUCT_NAME: RunShared
+        GENERATE_INFOPLIST_FILE: YES
+
+  GuruttoRunWidget:
+    type: app-extension
+    platform: iOS
+    deploymentTarget: "18.0"
+    sources:
+      - GuruttoRunWidget
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.marotech.GuruttoRun.Widget
+        INFOPLIST_FILE: GuruttoRunWidget/Info.plist
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: ""
+    dependencies:
+      - target: RunShared
+      - sdk: WidgetKit.framework
+      - sdk: SwiftUI.framework
 
   GuruttoRunTests:
     type: bundle.unit-test

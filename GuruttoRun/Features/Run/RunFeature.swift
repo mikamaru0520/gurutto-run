@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import CoreLocation
 import Foundation
+import RunShared
 
 @Reducer
 struct RunFeature {
@@ -67,6 +68,7 @@ struct RunFeature {
     @Dependency(\.healthKitClient) var healthKitClient
     @Dependency(\.continuousClock) var clock
     @Dependency(\.persistenceClient) var persistenceClient
+    @Dependency(\.liveActivityClient) var liveActivityClient
 
     private enum CancelID {
         case location
@@ -133,7 +135,20 @@ struct RunFeature {
                 state.lapCounter?.reset()
                 state.startDate = Date()
 
+                let mode = state.mode
+
                 return .merge(
+                    // Live Activity を開始
+                    .run { send in
+                        do {
+                            let activityMode: RunShared.RunActivityAttributes.Mode = mode == .imperialPalace ? .imperialPalace : .normal
+                            try await liveActivityClient.start(activityMode)
+                        } catch {
+                            // Live Activity の開始に失敗しても計測は続行
+                            print("Live Activity の開始に失敗: \(error)")
+                        }
+                    },
+
                     // 位置情報の更新を開始
                     .run { send in
                         await locationClient.startBackgroundSession()
@@ -166,14 +181,62 @@ struct RunFeature {
 
             case .pauseTapped:
                 state.status = .paused
+
+                // Live Activity を一時停止状態に更新
+                let distanceMeters = state.distanceMeters
+                let elapsedSeconds = Int(state.elapsed.components.seconds)
+                let paceSecondsPerKm: Double
+                if distanceMeters >= 100 {
+                    let distanceKm = distanceMeters / 1000.0
+                    paceSecondsPerKm = Double(elapsedSeconds) / distanceKm
+                } else {
+                    paceSecondsPerKm = 0
+                }
+                let laps = state.laps
+                let isImperialPalace = state.mode == .imperialPalace
+
                 return .merge(
                     .cancel(id: CancelID.location),
-                    .cancel(id: CancelID.timer)
+                    .cancel(id: CancelID.timer),
+                    .run { _ in
+                        try? await liveActivityClient.update(
+                            distanceMeters,
+                            elapsedSeconds,
+                            paceSecondsPerKm,
+                            isImperialPalace ? laps : nil,
+                            .paused
+                        )
+                    }
                 )
 
             case .resumeTapped:
                 state.status = .running
+
+                // Live Activity を実行中状態に更新
+                let distanceMeters = state.distanceMeters
+                let elapsedSeconds = Int(state.elapsed.components.seconds)
+                let paceSecondsPerKm: Double
+                if distanceMeters >= 100 {
+                    let distanceKm = distanceMeters / 1000.0
+                    paceSecondsPerKm = Double(elapsedSeconds) / distanceKm
+                } else {
+                    paceSecondsPerKm = 0
+                }
+                let laps = state.laps
+                let isImperialPalace = state.mode == .imperialPalace
+
                 return .merge(
+                    // Live Activity を更新
+                    .run { _ in
+                        try? await liveActivityClient.update(
+                            distanceMeters,
+                            elapsedSeconds,
+                            paceSecondsPerKm,
+                            isImperialPalace ? laps : nil,
+                            .running
+                        )
+                    },
+
                     // 位置情報の更新を再開
                     .run { send in
                         for await location in locationClient.updates() {
@@ -202,6 +265,12 @@ struct RunFeature {
                 return .merge(
                     .cancel(id: CancelID.location),
                     .cancel(id: CancelID.timer),
+
+                    // Live Activity を終了
+                    .run { _ in
+                        try? await liveActivityClient.end()
+                    },
+
                     .run { send in
                         await locationClient.stopBackgroundSession()
 
@@ -287,9 +356,34 @@ struct RunFeature {
                     startDate: state.startDate ?? Date(),
                     mode: state.mode == .imperialPalace ? "imperialPalace" : "normal"
                 )
-                return .run { _ in
-                    try? await persistenceClient.saveRunningState(runningState)
+
+                // Live Activity を更新
+                let distanceMeters = state.distanceMeters
+                let elapsedSeconds = Int(state.elapsed.components.seconds)
+                let paceSecondsPerKm: Double
+                if distanceMeters >= 100 {
+                    let distanceKm = distanceMeters / 1000.0
+                    paceSecondsPerKm = Double(elapsedSeconds) / distanceKm
+                } else {
+                    paceSecondsPerKm = 0
                 }
+                let laps = state.laps
+                let isImperialPalace = state.mode == .imperialPalace
+
+                return .merge(
+                    .run { _ in
+                        try? await persistenceClient.saveRunningState(runningState)
+                    },
+                    .run { _ in
+                        try? await liveActivityClient.update(
+                            distanceMeters,
+                            elapsedSeconds,
+                            paceSecondsPerKm,
+                            isImperialPalace ? laps : nil,
+                            .running
+                        )
+                    }
+                )
 
             case .workoutFinished:
                 // ワークアウト終了後、ShareFeature で表示するレコードを作成
@@ -332,6 +426,10 @@ struct RunFeature {
                     return .merge(
                         .cancel(id: CancelID.location),
                         .cancel(id: CancelID.timer),
+                        // Live Activity を終了
+                        .run { _ in
+                            try? await liveActivityClient.end()
+                        },
                         .run { _ in
                             await locationClient.stopBackgroundSession()
                         }

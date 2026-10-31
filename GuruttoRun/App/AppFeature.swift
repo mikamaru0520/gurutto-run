@@ -85,7 +85,7 @@ struct GlassTabBar: View {
     let onTabSelected: (AppFeature.State.Tab) -> Void
 
     var body: some View {
-        HStack(spacing: 0) {
+        HStack(spacing: Spacing.xl) {
             // 計測タブ
             TabBarItem(
                 icon: "figure.run",
@@ -94,8 +94,6 @@ struct GlassTabBar: View {
             ) {
                 onTabSelected(.run)
             }
-
-            Spacer()
 
             // 記録タブ
             TabBarItem(
@@ -108,15 +106,13 @@ struct GlassTabBar: View {
         }
         .padding(.horizontal, Spacing.xxl)
         .padding(.vertical, Spacing.lg)
-        .background(
-            RoundedRectangle(cornerRadius: Radius.xl)
-                .fill(.ultraThinMaterial)
-                .shadow(
-                    color: Shadow.medium.color,
-                    radius: Shadow.medium.radius,
-                    x: Shadow.medium.x,
-                    y: Shadow.medium.y
-                )
+        .background(.ultraThinMaterial)
+        .clipShape(RoundedRectangle(cornerRadius: 28))
+        .shadow(
+            color: Shadow.medium.color,
+            radius: Shadow.medium.radius,
+            x: Shadow.medium.x,
+            y: Shadow.medium.y
         )
     }
 }

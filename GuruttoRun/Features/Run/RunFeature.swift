@@ -259,6 +259,12 @@ struct RunFeature {
                 // ルートに追加
                 state.route.append(coordinate)
 
+                // ルートが大きくなりすぎないように定期的に簡略化
+                // 100点ごとに5m の許容誤差で簡略化
+                if state.route.count % 100 == 0 && state.route.count > 100 {
+                    state.route = state.route.simplified(epsilon: 5.0)
+                }
+
                 // 皇居モードの時のみ周回カウント
                 if state.mode == .imperialPalace {
                     state.lapCounter?.update(coordinate: coordinate, timestamp: location.timestamp)

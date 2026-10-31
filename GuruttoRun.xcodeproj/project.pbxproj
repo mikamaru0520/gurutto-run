@@ -14,17 +14,21 @@
 		28CD33F1447F85E75F7D34F5 /* CoordinateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 654C8FA24B1442BBF0345192 /* CoordinateTests.swift */; };
 		326196C90E422EFCB5C0978D /* ShareCardPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1324C8AA46A5A2E22692C8D /* ShareCardPhotoView.swift */; };
 		32725A831D13EA4A92AF78F5 /* ShareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7C353B2A515E4AE961C65D /* ShareView.swift */; };
+		3465F1A2CFF033836C347EB1 /* ShareFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B7B786A71541E62C12218FF /* ShareFeatureTests.swift */; };
 		3D971D45DDE175659209BA7D /* LocalProjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65857A3F67AD132EEF381465 /* LocalProjection.swift */; };
 		59CF98D49AD6E601C71622C9 /* GuruttoRunApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109AD302A10C1FCBE4343E5F /* GuruttoRunApp.swift */; };
 		66B96E78AC6F0C359DF3D550 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB5D7CEC0FF773740964C3 /* Colors.swift */; };
 		731D96AF74F25DFCE4EACD25 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27940C1F2CB979E2F70BF285 /* Assets.xcassets */; };
 		7387AC97812BB15BB69F197F /* RunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A431AF53E53A7E12D20AA0C4 /* RunView.swift */; };
 		7537009DE0523D63E91BC0A7 /* RunFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F474FE639CC5ADB66819DEE /* RunFeatureTests.swift */; };
+		7A7512ADDA5E8C775ED01BA9 /* HistoryFeatureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F1BEF8AF8B2C32B6C81872 /* HistoryFeatureTests.swift */; };
 		7D4C3F2A88A7D3FB1934007D /* AppFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCD58B8D3D0634ADDBACDBD /* AppFeature.swift */; };
 		835C51C853B841E3EDC23025 /* ReferenceRoute.json in Resources */ = {isa = PBXBuildFile; fileRef = 0611AFBE3C3708D9073707D1 /* ReferenceRoute.json */; };
 		8B58E275FB14944229AC1711 /* ShareFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E61F29A10F6B053741AA8F /* ShareFeature.swift */; };
 		9336661E8A9756CB9CD54D7A /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 3FB2E45BEC4AF7793F89F112 /* ComposableArchitecture */; };
+		B037A6D798180B46556C502F /* LocalProjectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA43A2E711227F6D15B9C80 /* LocalProjectionTests.swift */; };
 		B54F6F7AE6219E66A5BFB6C9 /* RunRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1687E5DDBE8DCBD586DD32 /* RunRecord.swift */; };
+		BFF56A8D0E7ACCD6E353030B /* RunRecordTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF86089645DFA190E10C7E1 /* RunRecordTests.swift */; };
 		CFF225ED15400782866573ED /* RunFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320225CFEF8D015DCEE7216E /* RunFeature.swift */; };
 		D4DD80563EC12358E0E52BD3 /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000551C9931500216C9C7E1 /* Typography.swift */; };
 		DDB6B6855EF9159C727E983B /* LapCounterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86AD6C05F3D71D9908E24644 /* LapCounterTests.swift */; };
@@ -53,12 +57,15 @@
 		1000551C9931500216C9C7E1 /* Typography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typography.swift; sourceTree = "<group>"; };
 		109AD302A10C1FCBE4343E5F /* GuruttoRunApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuruttoRunApp.swift; sourceTree = "<group>"; };
 		18CDE274487139AA2B1BE03E /* GuruttoRun.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GuruttoRun.entitlements; sourceTree = "<group>"; };
+		1B7B786A71541E62C12218FF /* ShareFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareFeatureTests.swift; sourceTree = "<group>"; };
 		1C1687E5DDBE8DCBD586DD32 /* RunRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunRecord.swift; sourceTree = "<group>"; };
 		1FCB5D7CEC0FF773740964C3 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		27940C1F2CB979E2F70BF285 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		320225CFEF8D015DCEE7216E /* RunFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunFeature.swift; sourceTree = "<group>"; };
 		3B40EB861A74B208E0D59B79 /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
+		42F1BEF8AF8B2C32B6C81872 /* HistoryFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryFeatureTests.swift; sourceTree = "<group>"; };
 		4B05CA4EE160B678CC2EEFA5 /* ShareClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareClient.swift; sourceTree = "<group>"; };
+		4BF86089645DFA190E10C7E1 /* RunRecordTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunRecordTests.swift; sourceTree = "<group>"; };
 		555950703216C36C14058BBF /* GuruttoRun.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = GuruttoRun.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5ADF1169F2172303ED310D07 /* HistoryFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryFeature.swift; sourceTree = "<group>"; };
 		5F474FE639CC5ADB66819DEE /* RunFeatureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunFeatureTests.swift; sourceTree = "<group>"; };
@@ -71,6 +78,7 @@
 		73703B591DA95BA43D48A4FE /* Coordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
 		7CCD58B8D3D0634ADDBACDBD /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
 		86AD6C05F3D71D9908E24644 /* LapCounterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LapCounterTests.swift; sourceTree = "<group>"; };
+		8FA43A2E711227F6D15B9C80 /* LocalProjectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalProjectionTests.swift; sourceTree = "<group>"; };
 		A141510267659520689898B1 /* LocationClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationClient.swift; sourceTree = "<group>"; };
 		A431AF53E53A7E12D20AA0C4 /* RunView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunView.swift; sourceTree = "<group>"; };
 		A97EA037E76C227E0E55F075 /* HealthKitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitClient.swift; sourceTree = "<group>"; };
@@ -109,8 +117,12 @@
 			isa = PBXGroup;
 			children = (
 				654C8FA24B1442BBF0345192 /* CoordinateTests.swift */,
+				42F1BEF8AF8B2C32B6C81872 /* HistoryFeatureTests.swift */,
 				86AD6C05F3D71D9908E24644 /* LapCounterTests.swift */,
+				8FA43A2E711227F6D15B9C80 /* LocalProjectionTests.swift */,
 				5F474FE639CC5ADB66819DEE /* RunFeatureTests.swift */,
+				4BF86089645DFA190E10C7E1 /* RunRecordTests.swift */,
+				1B7B786A71541E62C12218FF /* ShareFeatureTests.swift */,
 			);
 			path = GuruttoRunTests;
 			sourceTree = "<group>";
@@ -348,8 +360,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				28CD33F1447F85E75F7D34F5 /* CoordinateTests.swift in Sources */,
+				7A7512ADDA5E8C775ED01BA9 /* HistoryFeatureTests.swift in Sources */,
 				DDB6B6855EF9159C727E983B /* LapCounterTests.swift in Sources */,
+				B037A6D798180B46556C502F /* LocalProjectionTests.swift in Sources */,
 				7537009DE0523D63E91BC0A7 /* RunFeatureTests.swift in Sources */,
+				BFF56A8D0E7ACCD6E353030B /* RunRecordTests.swift in Sources */,
+				3465F1A2CFF033836C347EB1 /* ShareFeatureTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -128,7 +128,7 @@ extension Array where Element == Coordinate {
         let apY = p.y - a.y
 
         // t = AP·AB / |AB|^2 (線分上の最近点のパラメータ)
-        let t = max(0, min(1, (apX * abX + apY * abY) / abLengthSquared))
+        let t = Swift.max(0, Swift.min(1, (apX * abX + apY * abY) / abLengthSquared))
 
         // 線分上の最近点
         let nearestX = a.x + t * abX

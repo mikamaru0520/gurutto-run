@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E833E5839317C234B4A7F5B /* PersistenceClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BFFA84884F55A899CFD4E98 /* PersistenceClient.swift */; };
 		0F6A05F0EBEB1B5686E1939B /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 09EC12FBE12066685BC828B7 /* ComposableArchitecture */; };
 		1B82BD0AF5ECA0E44493F9F7 /* LapCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC094A098BDF091B8F714B3A /* LapCounter.swift */; };
 		20D831D4ABC7C4DF22BFE9F4 /* LocationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A141510267659520689898B1 /* LocationClient.swift */; };
@@ -63,6 +64,7 @@
 		647D6C8292A911E670F334AD /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		65857A3F67AD132EEF381465 /* LocalProjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalProjection.swift; sourceTree = "<group>"; };
 		6B58CCE68E3A3EAF50C0FD9F /* GuruttoRunTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = GuruttoRunTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6BFFA84884F55A899CFD4E98 /* PersistenceClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceClient.swift; sourceTree = "<group>"; };
 		7112E9929300687E5A2E18AF /* project.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = project.yml; sourceTree = "<group>"; };
 		73703B591DA95BA43D48A4FE /* Coordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
 		7CCD58B8D3D0634ADDBACDBD /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
@@ -238,6 +240,7 @@
 			children = (
 				A97EA037E76C227E0E55F075 /* HealthKitClient.swift */,
 				A141510267659520689898B1 /* LocationClient.swift */,
+				6BFFA84884F55A899CFD4E98 /* PersistenceClient.swift */,
 				4B05CA4EE160B678CC2EEFA5 /* ShareClient.swift */,
 			);
 			path = Dependencies;
@@ -360,6 +363,7 @@
 				1B82BD0AF5ECA0E44493F9F7 /* LapCounter.swift in Sources */,
 				3D971D45DDE175659209BA7D /* LocalProjection.swift in Sources */,
 				20D831D4ABC7C4DF22BFE9F4 /* LocationClient.swift in Sources */,
+				0E833E5839317C234B4A7F5B /* PersistenceClient.swift in Sources */,
 				E2DADD7294EEF314B9BCF515 /* RouteShape.swift in Sources */,
 				CFF225ED15400782866573ED /* RunFeature.swift in Sources */,
 				B54F6F7AE6219E66A5BFB6C9 /* RunRecord.swift in Sources */,

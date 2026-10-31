@@ -25,6 +25,9 @@ final class RunFeatureTests: XCTestCase {
             $0.healthKitClient.addLocation = { _, _ in }
             $0.healthKitClient.finishWorkout = { _, _ in }
             $0.continuousClock = clock
+            $0.persistenceClient.loadRunningState = { nil }
+            $0.persistenceClient.saveRunningState = { _ in }
+            $0.persistenceClient.clearRunningState = {}
         }
 
         // Start
@@ -85,6 +88,7 @@ final class RunFeatureTests: XCTestCase {
             $0.locationClient.stopBackgroundSession = {}
             $0.healthKitClient.requestAuthorization = {}
             $0.continuousClock = clock
+            $0.persistenceClient.saveRunningState = { _ in }
         }
 
         // Pause
@@ -117,9 +121,79 @@ final class RunFeatureTests: XCTestCase {
             $0.locationClient.stopBackgroundSession = {}
             $0.healthKitClient.addLocation = { _, _ in }
             $0.continuousClock = clock
+            $0.persistenceClient.saveRunningState = { _ in }
         }
 
-        // 精度の悪い点は無視される
+        // 精度の悪い点は無視され、警告が表示される
         await store.send(.locationUpdated(lowAccuracyLocation))
+        await store.receive(\.lowGPSAccuracyDetected) {
+            $0.showLowGPSAccuracyWarning = true
+        }
+
+        // 2回目の精度の悪い点では警告は表示されない
+        await store.send(.locationUpdated(lowAccuracyLocation))
+    }
+
+    func testHealthKitAuthorizationError() async {
+        struct HealthKitError: Error {}
+
+        let store = TestStore(initialState: RunFeature.State()) {
+            RunFeature()
+        } withDependencies: {
+            $0.locationClient.updates = { .finished }
+            $0.healthKitClient.requestAuthorization = { throw HealthKitError() }
+            $0.persistenceClient.loadRunningState = { nil }
+        }
+
+        await store.send(.onAppear)
+        await store.receive(\.errorOccurred) {
+            $0.errorMessage = "HealthKit へのアクセス権限が必要です。設定アプリから権限を許可してください。"
+        }
+
+        // エラーを閉じる
+        await store.send(.dismissError) {
+            $0.errorMessage = nil
+        }
+    }
+
+    func testLocationAuthorizationError() async {
+        struct LocationError: Error {}
+
+        let locationStream = AsyncThrowingStream<CLLocation, Error> { continuation in
+            continuation.finish(throwing: LocationError())
+        }
+
+        let store = TestStore(initialState: RunFeature.State(status: .running)) {
+            RunFeature()
+        } withDependencies: {
+            $0.locationClient.updates = { locationStream }
+            $0.locationClient.startBackgroundSession = {}
+            $0.locationClient.stopBackgroundSession = {}
+            $0.healthKitClient.startWorkout = {}
+            $0.continuousClock = TestClock()
+            $0.persistenceClient.saveRunningState = { _ in }
+        }
+
+        await store.send(.startTapped) {
+            $0.status = .running
+            $0.distanceMeters = 0
+            $0.elapsed = .zero
+            $0.route = []
+        }
+
+        await store.receive(\.errorOccurred) {
+            $0.errorMessage = "位置情報の取得に失敗しました。設定アプリから位置情報の権限を許可してください。"
+            $0.status = .idle
+        }
+    }
+
+    func testGPSAccuracyWarningDismiss() async {
+        let store = TestStore(initialState: RunFeature.State(showLowGPSAccuracyWarning: true)) {
+            RunFeature()
+        }
+
+        await store.send(.dismissLowGPSAccuracyWarning) {
+            $0.showLowGPSAccuracyWarning = false
+        }
     }
 }

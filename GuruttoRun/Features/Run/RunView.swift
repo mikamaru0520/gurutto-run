@@ -106,6 +106,30 @@ struct RunView: View {
             } message: {
                 Text("皇居モードにすると、周回を自動でカウントします。")
             }
+            // エラーアラート
+            .alert("エラー", isPresented: Binding(
+                get: { store.errorMessage != nil },
+                set: { if !$0 { store.send(.dismissError) } }
+            )) {
+                Button("OK") {
+                    store.send(.dismissError)
+                }
+            } message: {
+                if let errorMessage = store.errorMessage {
+                    Text(errorMessage)
+                }
+            }
+            // GPS 精度警告
+            .alert("GPS 精度が低下しています", isPresented: Binding(
+                get: { store.showLowGPSAccuracyWarning },
+                set: { if !$0 { store.send(.dismissLowGPSAccuracyWarning) } }
+            )) {
+                Button("OK") {
+                    store.send(.dismissLowGPSAccuracyWarning)
+                }
+            } message: {
+                Text("屋外の開けた場所に移動すると、GPS の精度が向上します。")
+            }
         }
     }
 

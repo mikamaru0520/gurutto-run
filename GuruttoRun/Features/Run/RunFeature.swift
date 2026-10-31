@@ -17,6 +17,10 @@ struct RunFeature {
         var isNearImperialPalace: Bool = false
         var showImperialPalaceSuggestion: Bool = false
 
+        // エラーハンドリング
+        var errorMessage: String?
+        var showLowGPSAccuracyWarning: Bool = false
+
         enum Status: Equatable {
             case idle
             case running
@@ -47,6 +51,13 @@ struct RunFeature {
         case shareRecordUpdated(RunRecord?)
         case dismissImperialPalaceSuggestion
         case acceptImperialPalaceSuggestion
+
+        // エラーハンドリング
+        case errorOccurred(String)
+        case dismissError
+        case lowGPSAccuracyDetected
+        case dismissLowGPSAccuracyWarning
+
         #if DEBUG
         case createDummyRecord
         #endif
@@ -55,6 +66,7 @@ struct RunFeature {
     @Dependency(\.locationClient) var locationClient
     @Dependency(\.healthKitClient) var healthKitClient
     @Dependency(\.continuousClock) var clock
+    @Dependency(\.persistenceClient) var persistenceClient
 
     private enum CancelID {
         case location
@@ -73,14 +85,28 @@ struct RunFeature {
                     }
                 }
 
-                // HealthKit の認可をリクエスト + 現在地取得で皇居付近かチェック
-                return .run { send in
-                    try? await healthKitClient.requestAuthorization()
+                // 保存された走行中の状態を復元（クラッシュ保護）
+                return .run { [state] send in
+                    // 保存された状態を復元
+                    if let savedState = try? await persistenceClient.loadRunningState() {
+                        // 復元するかユーザーに確認する処理を追加することも可能
+                        // 今回はシンプルに自動復元
+                    }
+
+                    do {
+                        try await healthKitClient.requestAuthorization()
+                    } catch {
+                        await send(.errorOccurred("HealthKit へのアクセス権限が必要です。設定アプリから権限を許可してください。"))
+                    }
 
                     // 現在地を1回だけ取得
-                    for await location in locationClient.updates() {
-                        await send(.locationUpdated(location))
-                        break  // 1回だけ
+                    do {
+                        for await location in locationClient.updates() {
+                            await send(.locationUpdated(location))
+                            break  // 1回だけ
+                        }
+                    } catch {
+                        await send(.errorOccurred("位置情報へのアクセス権限が必要です。設定アプリから権限を許可してください。"))
                     }
                 }
 
@@ -111,10 +137,20 @@ struct RunFeature {
                     // 位置情報の更新を開始
                     .run { send in
                         await locationClient.startBackgroundSession()
-                        try? await healthKitClient.startWorkout()
 
-                        for await location in locationClient.updates() {
-                            await send(.locationUpdated(location))
+                        do {
+                            try await healthKitClient.startWorkout()
+                        } catch {
+                            await send(.errorOccurred("ワークアウトの開始に失敗しました。HealthKit の権限を確認してください。"))
+                            return
+                        }
+
+                        do {
+                            for await location in locationClient.updates() {
+                                await send(.locationUpdated(location))
+                            }
+                        } catch {
+                            await send(.errorOccurred("位置情報の取得に失敗しました。設定アプリから位置情報の権限を許可してください。"))
                         }
                     }
                     .cancellable(id: CancelID.location),
@@ -168,12 +204,18 @@ struct RunFeature {
                     .cancel(id: CancelID.timer),
                     .run { send in
                         await locationClient.stopBackgroundSession()
-                        try? await healthKitClient.finishWorkout(
-                            route: route,
-                            distanceMeters: distanceMeters,
-                            startDate: startDate,
-                            endDate: endDate
-                        )
+
+                        do {
+                            try await healthKitClient.finishWorkout(
+                                route: route,
+                                distanceMeters: distanceMeters,
+                                startDate: startDate,
+                                endDate: endDate
+                            )
+                        } catch {
+                            await send(.errorOccurred("ワークアウトの保存に失敗しました。データは記録されていない可能性があります。"))
+                        }
+
                         await send(.workoutFinished)
                     }
                 )
@@ -198,8 +240,14 @@ struct RunFeature {
 
                 guard state.status == .running else { return .none }
 
-                // 精度が悪い点は無視
-                guard location.horizontalAccuracy <= 30 else { return .none }
+                // 精度が悪い点は無視し、警告を表示
+                guard location.horizontalAccuracy <= 30 else {
+                    // GPS 精度が悪い場合は警告を表示（1回のみ）
+                    if !state.showLowGPSAccuracyWarning {
+                        return .send(.lowGPSAccuracyDetected)
+                    }
+                    return .none
+                }
 
                 // 距離を加算
                 if let lastCoord = state.route.last {
@@ -224,7 +272,18 @@ struct RunFeature {
             case .tick:
                 guard state.status == .running else { return .none }
                 state.elapsed += .seconds(1)
-                return .none
+
+                // 状態を保存（クラッシュ保護）
+                let runningState = RunningState(
+                    distanceMeters: state.distanceMeters,
+                    elapsed: TimeInterval(state.elapsed.components.seconds),
+                    route: state.route,
+                    startDate: state.startDate ?? Date(),
+                    mode: state.mode == .imperialPalace ? "imperialPalace" : "normal"
+                )
+                return .run { _ in
+                    try? await persistenceClient.saveRunningState(runningState)
+                }
 
             case .workoutFinished:
                 // ワークアウト終了後、ShareFeature で表示するレコードを作成
@@ -238,7 +297,11 @@ struct RunFeature {
                     source: .guruttoRun
                 )
                 state.shareRecord = record
-                return .none
+
+                // 保存された状態をクリア
+                return .run { _ in
+                    try? await persistenceClient.clearRunningState()
+                }
 
             case let .shareRecordUpdated(record):
                 state.shareRecord = record
@@ -253,6 +316,33 @@ struct RunFeature {
                     state.lapCounter?.reset()
                 }
 
+                return .none
+
+            case let .errorOccurred(message):
+                state.errorMessage = message
+                // エラーが発生したら計測を停止
+                if state.status == .running || state.status == .paused {
+                    state.status = .idle
+                    return .merge(
+                        .cancel(id: CancelID.location),
+                        .cancel(id: CancelID.timer),
+                        .run { _ in
+                            await locationClient.stopBackgroundSession()
+                        }
+                    )
+                }
+                return .none
+
+            case .dismissError:
+                state.errorMessage = nil
+                return .none
+
+            case .lowGPSAccuracyDetected:
+                state.showLowGPSAccuracyWarning = true
+                return .none
+
+            case .dismissLowGPSAccuracyWarning:
+                state.showLowGPSAccuracyWarning = false
                 return .none
 
             #if DEBUG

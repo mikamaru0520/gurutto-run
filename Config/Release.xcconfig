@@ -1,0 +1,4 @@
+// Release Configuration
+
+// Facebook App ID (ユーザーが後で設定)
+FACEBOOK_APP_ID = YOUR_FACEBOOK_APP_ID_HERE

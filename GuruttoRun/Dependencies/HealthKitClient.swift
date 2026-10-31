@@ -2,6 +2,7 @@ import ComposableArchitecture
 import HealthKit
 import CoreLocation
 import Foundation
+import OSLog
 
 @DependencyClient
 struct HealthKitClient: Sendable {
@@ -51,32 +52,32 @@ extension HealthKitClient: DependencyKey {
 
     static let testValue = HealthKitClient(
         requestAuthorization: {
-            print("🧪 [Test] HealthKit authorization requested")
+            Logger.test.info("HealthKit authorization requested")
         },
         startWorkout: {
-            print("🧪 [Test] Workout started")
+            Logger.test.info("Workout started")
         },
         finishWorkout: { route, distanceMeters, startDate, endDate in
-            print("🧪 [Test] Workout finished: \(distanceMeters)m, \(route.count) points")
+            Logger.test.info("Workout finished: \(distanceMeters, privacy: .public)m, \(route.count) points")
         },
         addLocation: { coordinate, timestamp in
-            print("🧪 [Test] Location added: \(coordinate)")
+            Logger.test.debug("Location added: \(String(describing: coordinate))")
         },
         fetchWorkouts: { _ in
-            print("🧪 [Test] Fetching workouts")
+            Logger.test.info("Fetching workouts")
             return []
         }
     )
 
     static let previewValue = HealthKitClient(
         requestAuthorization: {
-            print("👁️ [Preview] HealthKit authorization requested")
+            Logger.preview.info("HealthKit authorization requested")
         },
         startWorkout: {
-            print("👁️ [Preview] Workout started")
+            Logger.preview.info("Workout started")
         },
         finishWorkout: { route, distanceMeters, startDate, endDate in
-            print("👁️ [Preview] Workout finished: \(distanceMeters)m, \(route.count) points")
+            Logger.preview.info("Workout finished: \(distanceMeters, privacy: .public)m, \(route.count) points")
         },
         addLocation: { _, _ in },
         fetchWorkouts: { _ in
@@ -159,13 +160,13 @@ private actor HealthKitManager {
     ) async throws {
         // HealthKit が利用可能かチェック
         guard HKHealthStore.isHealthDataAvailable() else {
-            print("⚠️ HealthKit is not available on this device/simulator")
+            Logger.healthKit.warning("HealthKit is not available on this device/simulator")
             // シミュレーターではHealthKitが利用できないので、エラーを投げずに終了
             return
         }
 
         guard let routeBuilder = routeBuilder else {
-            print("⚠️ RouteBuilder is nil, skipping HealthKit save")
+            Logger.healthKit.warning("RouteBuilder is nil, skipping HealthKit save")
             return
         }
 

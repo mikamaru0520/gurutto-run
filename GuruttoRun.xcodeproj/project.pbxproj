@@ -46,6 +46,7 @@
 		E2DADD7294EEF314B9BCF515 /* RouteShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = C989E62CD36491F51F08CEA5 /* RouteShape.swift */; };
 		E781B51F6C13A6D4E8095B87 /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73703B591DA95BA43D48A4FE /* Coordinate.swift */; };
 		E81E5A956529C117B1D83816 /* HealthKitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A97EA037E76C227E0E55F075 /* HealthKitClient.swift */; };
+		F1563C069EF0388D7FCD51AC /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B390D548B9637CFE25F465 /* Logger.swift */; };
 		F73936F35486F3373CE660F6 /* ShareCardNightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADC214504023262FF34B15A /* ShareCardNightView.swift */; };
 		FAA77C76733F5D09C4466A2B /* ShareClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B05CA4EE160B678CC2EEFA5 /* ShareClient.swift */; };
 /* End PBXBuildFile section */
@@ -122,6 +123,7 @@
 		8FA43A2E711227F6D15B9C80 /* LocalProjectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalProjectionTests.swift; sourceTree = "<group>"; };
 		A141510267659520689898B1 /* LocationClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationClient.swift; sourceTree = "<group>"; };
 		A431AF53E53A7E12D20AA0C4 /* RunView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunView.swift; sourceTree = "<group>"; };
+		A8B390D548B9637CFE25F465 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		A97EA037E76C227E0E55F075 /* HealthKitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitClient.swift; sourceTree = "<group>"; };
 		B7E61F29A10F6B053741AA8F /* ShareFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareFeature.swift; sourceTree = "<group>"; };
 		BB497D32BB5621BC07F6A586 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -284,6 +286,7 @@
 				51255B42FFEB5E28662CE223 /* Domain */,
 				81F36C66E721653816AE8227 /* Features */,
 				3629F954F76B6276CAFD46FE /* Resources */,
+				F8B4FA99784BAF5F82030BA4 /* Utilities */,
 			);
 			path = GuruttoRun;
 			sourceTree = "<group>";
@@ -346,6 +349,14 @@
 				4B05CA4EE160B678CC2EEFA5 /* ShareClient.swift */,
 			);
 			path = Dependencies;
+			sourceTree = "<group>";
+		};
+		F8B4FA99784BAF5F82030BA4 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				A8B390D548B9637CFE25F465 /* Logger.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -523,6 +534,7 @@
 				D32D06F190AAA99F096F4003 /* LiveActivityClient.swift in Sources */,
 				3D971D45DDE175659209BA7D /* LocalProjection.swift in Sources */,
 				20D831D4ABC7C4DF22BFE9F4 /* LocationClient.swift in Sources */,
+				F1563C069EF0388D7FCD51AC /* Logger.swift in Sources */,
 				0E833E5839317C234B4A7F5B /* PersistenceClient.swift in Sources */,
 				E2DADD7294EEF314B9BCF515 /* RouteShape.swift in Sources */,
 				CFF225ED15400782866573ED /* RunFeature.swift in Sources */,

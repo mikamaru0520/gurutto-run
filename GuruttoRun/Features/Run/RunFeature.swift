@@ -2,6 +2,7 @@ import ComposableArchitecture
 import CoreLocation
 import Foundation
 import RunShared
+import OSLog
 
 @Reducer
 struct RunFeature {
@@ -145,7 +146,7 @@ struct RunFeature {
                             try await liveActivityClient.start(activityMode)
                         } catch {
                             // Live Activity の開始に失敗しても計測は続行
-                            print("Live Activity の開始に失敗: \(error)")
+                            Logger.liveActivity.error("Failed to start Live Activity: \(error.localizedDescription)")
                         }
                     },
 
@@ -282,9 +283,9 @@ struct RunFeature {
                                 startDate: startDate,
                                 endDate: endDate
                             )
-                            print("✅ HealthKit への保存が完了しました")
+                            Logger.healthKit.info("HealthKit save completed successfully")
                         } catch {
-                            print("⚠️ HealthKit への保存に失敗: \(error.localizedDescription)")
+                            Logger.healthKit.error("Failed to save to HealthKit: \(error.localizedDescription)")
                             // エラーメッセージは表示するが、記録画面には遷移する
                         }
 

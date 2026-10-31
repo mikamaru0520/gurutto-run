@@ -274,6 +274,7 @@ struct RunFeature {
                     .run { send in
                         await locationClient.stopBackgroundSession()
 
+                        // HealthKit への保存を試みる（エラーでも続行）
                         do {
                             try await healthKitClient.finishWorkout(
                                 route: route,
@@ -281,10 +282,13 @@ struct RunFeature {
                                 startDate: startDate,
                                 endDate: endDate
                             )
+                            print("✅ HealthKit への保存が完了しました")
                         } catch {
-                            await send(.errorOccurred("ワークアウトの保存に失敗しました。データは記録されていない可能性があります。"))
+                            print("⚠️ HealthKit への保存に失敗: \(error.localizedDescription)")
+                            // エラーメッセージは表示するが、記録画面には遷移する
                         }
 
+                        // 保存成功/失敗に関わらず、必ず記録画面に遷移
                         await send(.workoutFinished)
                     }
                 )

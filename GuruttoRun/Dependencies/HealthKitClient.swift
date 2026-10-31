@@ -49,12 +49,35 @@ extension HealthKitClient: DependencyKey {
         )
     }()
 
-    static let testValue = HealthKitClient()
+    static let testValue = HealthKitClient(
+        requestAuthorization: {
+            print("🧪 [Test] HealthKit authorization requested")
+        },
+        startWorkout: {
+            print("🧪 [Test] Workout started")
+        },
+        finishWorkout: { route, distanceMeters, startDate, endDate in
+            print("🧪 [Test] Workout finished: \(distanceMeters)m, \(route.count) points")
+        },
+        addLocation: { coordinate, timestamp in
+            print("🧪 [Test] Location added: \(coordinate)")
+        },
+        fetchWorkouts: { _ in
+            print("🧪 [Test] Fetching workouts")
+            return []
+        }
+    )
 
     static let previewValue = HealthKitClient(
-        requestAuthorization: {},
-        startWorkout: {},
-        finishWorkout: { _, _, _, _ in },
+        requestAuthorization: {
+            print("👁️ [Preview] HealthKit authorization requested")
+        },
+        startWorkout: {
+            print("👁️ [Preview] Workout started")
+        },
+        finishWorkout: { route, distanceMeters, startDate, endDate in
+            print("👁️ [Preview] Workout finished: \(distanceMeters)m, \(route.count) points")
+        },
         addLocation: { _, _ in },
         fetchWorkouts: { _ in
             // プレビュー用のダミーデータ
@@ -134,7 +157,17 @@ private actor HealthKitManager {
         startDate: Date,
         endDate: Date
     ) async throws {
-        guard let routeBuilder = routeBuilder else { return }
+        // HealthKit が利用可能かチェック
+        guard HKHealthStore.isHealthDataAvailable() else {
+            print("⚠️ HealthKit is not available on this device/simulator")
+            // シミュレーターではHealthKitが利用できないので、エラーを投げずに終了
+            return
+        }
+
+        guard let routeBuilder = routeBuilder else {
+            print("⚠️ RouteBuilder is nil, skipping HealthKit save")
+            return
+        }
 
         // ルートを保存
         for (index, coord) in route.enumerated() {

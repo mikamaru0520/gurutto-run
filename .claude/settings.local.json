@@ -4,7 +4,13 @@
       "Bash(mkdir:*)",
       "Bash(xcodegen generate:*)",
       "Bash(xcodebuild:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git config:*)",
+      "Bash(swiftc -typecheck:*)",
+      "Bash(swift test:*)",
+      "Bash(git commit:*)",
+      "Bash(find:*)",
+      "Bash(swift build:*)"
     ],
     "deny": [],
     "ask": []

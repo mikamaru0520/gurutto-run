@@ -16,7 +16,7 @@ struct RunView: View {
                 .ignoresSafeArea()
 
                 VStack(spacing: 0) {
-                    // モード切替 / 計測中バッジ
+                    // モード切替 / ステータスバッジ
                     if store.status == .idle {
                         ModeSwitcher(
                             selectedMode: store.mode,
@@ -26,6 +26,21 @@ struct RunView: View {
                             }
                         )
                         .padding(.horizontal)
+                        .padding(.top)
+                    } else if store.status == .finished {
+                        // 保存中のバッジ
+                        HStack(spacing: Spacing.xs) {
+                            ProgressView()
+                                .scaleEffect(0.8)
+                            Text("保存中...")
+                                .font(.caption.weight(.semibold))
+                        }
+                        .foregroundStyle(AppColors.textPrimary)
+                        .padding(.horizontal, Spacing.md)
+                        .padding(.vertical, Spacing.xs)
+                        .background(.ultraThinMaterial)
+                        .clipShape(Capsule())
+                        .shadow(color: Shadow.light.color, radius: Shadow.light.radius, x: Shadow.light.x, y: Shadow.light.y)
                         .padding(.top)
                     } else {
                         // 計測中のバッジ
@@ -702,7 +717,15 @@ struct ActionButtons: View {
                 }
 
             case .finished:
-                EmptyView()
+                // 保存中インジケーター
+                VStack(spacing: Spacing.md) {
+                    ProgressView()
+                        .scaleEffect(1.5)
+                    Text("記録を保存中...")
+                        .font(.subheadline)
+                        .foregroundStyle(AppColors.textSecondary)
+                }
+                .frame(height: ButtonSize.lg)
             }
         }
     }

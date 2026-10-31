@@ -51,26 +51,97 @@ struct AppView: View {
 
     var body: some View {
         WithPerceptionTracking {
-            TabView(selection: Binding(
-                get: { store.selectedTab },
-                set: { store.send(.tabSelected($0)) }
-            )) {
-                RunView(store: store.scope(state: \.run, action: \.run))
-                    .tabItem {
-                        Label("計測", systemImage: "figure.run")
+            // タブのコンテンツ
+            Group {
+                switch store.selectedTab {
+                case .run:
+                    RunView(store: store.scope(state: \.run, action: \.run))
+                case .history:
+                    NavigationStack {
+                        HistoryView(store: store.scope(state: \.history, action: \.history))
                     }
-                    .tag(AppFeature.State.Tab.run)
-
-                NavigationStack {
-                    HistoryView(store: store.scope(state: \.history, action: \.history))
                 }
-                .tabItem {
-                    Label("記録", systemImage: "list.bullet")
-                }
-                .tag(AppFeature.State.Tab.history)
+            }
+            .safeAreaInset(edge: .bottom) {
+                // カスタムタブバー（ガラスモーフィズム）
+                GlassTabBar(
+                    selectedTab: store.selectedTab,
+                    onTabSelected: { tab in
+                        store.send(.tabSelected(tab))
+                    }
+                )
+                .padding(.horizontal, Spacing.xl)
+                .padding(.bottom, Spacing.md)
             }
             .preferredColorScheme(.light)
         }
+    }
+}
+
+// MARK: - Glass Tab Bar
+
+struct GlassTabBar: View {
+    let selectedTab: AppFeature.State.Tab
+    let onTabSelected: (AppFeature.State.Tab) -> Void
+
+    var body: some View {
+        HStack(spacing: 0) {
+            // 計測タブ
+            TabBarItem(
+                icon: "figure.run",
+                title: "計測",
+                isSelected: selectedTab == .run
+            ) {
+                onTabSelected(.run)
+            }
+
+            Spacer()
+
+            // 記録タブ
+            TabBarItem(
+                icon: "list.bullet",
+                title: "記録",
+                isSelected: selectedTab == .history
+            ) {
+                onTabSelected(.history)
+            }
+        }
+        .padding(.horizontal, Spacing.xxl)
+        .padding(.vertical, Spacing.lg)
+        .background(
+            RoundedRectangle(cornerRadius: Radius.xl)
+                .fill(.ultraThinMaterial)
+                .shadow(
+                    color: Shadow.medium.color,
+                    radius: Shadow.medium.radius,
+                    x: Shadow.medium.x,
+                    y: Shadow.medium.y
+                )
+        )
+    }
+}
+
+struct TabBarItem: View {
+    let icon: String
+    let title: String
+    let isSelected: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: Spacing.xxs) {
+                Image(systemName: icon)
+                    .font(.system(size: FontSize.lg, weight: isSelected ? .semibold : .regular))
+                    .foregroundStyle(isSelected ? AppColors.textPrimary : AppColors.textSecondary)
+
+                Text(title)
+                    .font(.system(size: FontSize.xs, weight: isSelected ? .semibold : .regular))
+                    .foregroundStyle(isSelected ? AppColors.textPrimary : AppColors.textSecondary)
+            }
+            .frame(maxWidth: .infinity)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
     }
 }
 
